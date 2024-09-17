@@ -6,84 +6,102 @@ public class MedalTable
 {
     public static void main(String[] args)
     {
-        Pais[] paises;
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt(); // Lê o número de elementos.
+        Pais[] paises = new Pais[n]; // Inicializa o vetor de n elementos.
 
-        try (Scanner sc = new Scanner(System.in)) {
-            int n = sc.nextInt();
-            paises = new Pais[n];
+        // Lê cada país e o coloca no vetor.
+        for (int i = 0; i < n; ++i)
+            paises[i] =
+                new Pais(sc.next(), sc.nextInt(), sc.nextInt(), sc.nextInt());
 
-            for (int i = 0; i < n; ++i)
-                paises[i] = new Pais(sc.next(), sc.nextInt(), sc.nextInt(),
-                                     sc.nextInt());
-        } catch (Exception e) {
-            e.printStackTrace();
-            return;
-        }
+        sc.close(); // Fecha o Scanner.
 
-        insertionSort(paises);
+        insertionSort(paises); // Ordena o vetor.
 
-        for (Pais p : paises)
-            System.out.println(p);
+        // Mostra o resultado.
+        for (int i = 0; i < n; ++i)
+            System.out.println(paises[i]);
     }
 
-    public static <T extends Comparable<T> > void insertionSort(T[] vec)
+    // Decidi usar o método de inserção porque acho mais fácil de lembrar.
+    public static void insertionSort(Pais[] vec)
     {
         for (int i = 1; i < vec.length; ++i) {
-            T tmp = vec[i];
-            int j;
+            Pais temp = vec[i]; // Salvamos o elemento da posição atual.
+            int j; // Iterador do laço interno.
 
-            for (j = i - 1; j >= 0 && tmp.compareTo(vec[j]) > 0; --j)
-                vec[j + 1] = vec[j];
+            /* Usamos o método .compareTo para comparar o objeto temporário a
+             * cada elemento anterior no vetor. Fazemos isso para determinar a
+             * ordem relativa entre eles. (Tem o mesmo efeito para objeto
+             * “Pais” que o operador `>` tem para variáveis “int”.) */
+            for (j = i - 1; j >= 0 && temp.compareTo(vec[j]) > 0; --j)
+                vec[j + 1] = vec[j]; // Desloca para a direita.
 
-            vec[j + 1] = tmp;
+            vec[j + 1] = temp; // Insere o elemento salvo.
         }
     }
 }
 
-class Pais implements Comparable<Pais>
+class Pais
 {
-    String nome;
-    int ouro, prata, bronze;
+    // Atributos (todos são privados, mas não precisamos de getter e setter.)
+    private String nome;
+    private int numOuros, numPratas, numBronzes;
 
+    // Construtor.
     public Pais(String nome, int ouro, int prata, int bronze)
     {
         this.nome = nome;
-        this.ouro = ouro;
-        this.prata = prata;
-        this.bronze = bronze;
+        this.numOuros = ouro;
+        this.numPratas = prata;
+        this.numBronzes = bronze;
     }
 
-    @Override public int compareTo(Pais outro)
+    // Função que compara dois países. Usaremos no lugar do operador `>` no
+    // sort. Retornará positivo se o país em questão tiver que aparecer antes
+    // do `outro` na lista.
+    public int compareTo(Pais outro)
     {
-        int res = 0;
+        int res = 0; // Valor de resposta que retornaremos.
 
-        if (ouro != outro.ouro) {
-            res = ouro - outro.ouro;
-        } else if (prata != outro.prata) {
-            res = prata - outro.prata;
-        } else if (bronze != outro.bronze) {
-            res = bronze - outro.bronze;
+        if (numOuros != outro.numOuros) {
+            // Compara número das medalhas de ouro.
+            res = numOuros - outro.numOuros;
+        } else if (numPratas != outro.numPratas) {
+            // Se forem iguais, compara o das medalhas de prata.
+            res = numPratas - outro.numPratas;
+        } else if (numBronzes != outro.numBronzes) {
+            // Se forem iguais, compara as medalhas de bronze.
+            res = numBronzes - outro.numBronzes;
         } else {
-            // Compara nomes em ordem alfabética.
-            int tam = (nome.length() > outro.nome.length()) ?
-                          outro.nome.length() :
-                          nome.length();
+            // Se os números de medalhas forem iguais, compara nomes em ordem
+            // alfabética. Não podemos usar os métodos padrão da classe String,
+            // então fazemos a comparação caractere por caractere, manualmente.
 
-            for (int i = 0; i < tam; ++i) {
+            // Tamanho do menor nome.
+            int tamanhoMinimo = Math.min(outro.nome.length(), nome.length());
+
+            // Compara cada caractere.
+            for (int i = 0; i < tamanhoMinimo; ++i) {
                 res = outro.nome.charAt(i) - nome.charAt(i);
                 if (res != 0)
-                    i = tam;
+                    i = tamanhoMinimo; // Se encontramos diferença, termina o loop.
             }
 
-            // Se forem iguais, compara os tamanhos dos nomes.
+            // Se nenhuma diferença foi encontrada, ainda é necessário comparar
+            // os tamanhos dos nomes.
             res = (res != 0) ? res : outro.nome.length() - nome.length();
         }
 
         return res;
     }
 
-    @Override public String toString()
+    // Função que converte o país pra uma string. Isso será implicitamente
+    // usado pelo System.out.println() quando quisermos printar o país com o
+    // número de medalhas.
+    public String toString()
     {
-        return "" + nome + " " + ouro + " " + prata + " " + bronze;
+        return nome + " " + numOuros + " " + numPratas + " " + numBronzes;
     }
 }
