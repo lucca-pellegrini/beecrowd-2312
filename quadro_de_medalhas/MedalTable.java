@@ -12,13 +12,9 @@ public class MedalTable
             int n = sc.nextInt();
             paises = new Pais[n];
 
-            for (int i = 0; i < n; ++i) {
-                paises[i] = new Pais();
-                paises[i].nome = sc.next();
-                paises[i].ouro = sc.nextInt();
-                paises[i].prata = sc.nextInt();
-                paises[i].bronze = sc.nextInt();
-            }
+            for (int i = 0; i < n; ++i)
+                paises[i] = new Pais(sc.next(), sc.nextInt(), sc.nextInt(),
+                                     sc.nextInt());
         } catch (Exception e) {
             e.printStackTrace();
             return;
@@ -47,6 +43,14 @@ public class MedalTable
     {
         String nome;
         int ouro, prata, bronze;
+
+        public Pais(String nome, int ouro, int prata, int bronze)
+        {
+            this.nome = nome;
+            this.ouro = ouro;
+            this.prata = prata;
+            this.bronze = bronze;
+        }
 
         @Override public int compareTo(Pais outro)
         {
