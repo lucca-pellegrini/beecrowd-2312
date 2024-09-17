@@ -38,52 +38,52 @@ public class MedalTable
             vec[j + 1] = tmp;
         }
     }
+}
 
-    static class Pais implements Comparable<Pais>
+class Pais implements Comparable<Pais>
+{
+    String nome;
+    int ouro, prata, bronze;
+
+    public Pais(String nome, int ouro, int prata, int bronze)
     {
-        String nome;
-        int ouro, prata, bronze;
+        this.nome = nome;
+        this.ouro = ouro;
+        this.prata = prata;
+        this.bronze = bronze;
+    }
 
-        public Pais(String nome, int ouro, int prata, int bronze)
-        {
-            this.nome = nome;
-            this.ouro = ouro;
-            this.prata = prata;
-            this.bronze = bronze;
-        }
+    @Override public int compareTo(Pais outro)
+    {
+        int res = 0;
 
-        @Override public int compareTo(Pais outro)
-        {
-            int res = 0;
+        if (ouro != outro.ouro) {
+            res = ouro - outro.ouro;
+        } else if (prata != outro.prata) {
+            res = prata - outro.prata;
+        } else if (bronze != outro.bronze) {
+            res = bronze - outro.bronze;
+        } else {
+            // Compara nomes em ordem alfabética.
+            int tam = (nome.length() > outro.nome.length()) ?
+                          outro.nome.length() :
+                          nome.length();
 
-            if (ouro != outro.ouro) {
-                res = ouro - outro.ouro;
-            } else if (prata != outro.prata) {
-                res = prata - outro.prata;
-            } else if (bronze != outro.bronze) {
-                res = bronze - outro.bronze;
-            } else {
-                // Compara nomes em ordem alfabética.
-                int tam = (nome.length() > outro.nome.length()) ?
-                              outro.nome.length() :
-                              nome.length();
-
-                for (int i = 0; i < tam; ++i) {
-                    res = outro.nome.charAt(i) - nome.charAt(i);
-                    if (res != 0)
-                        i = tam;
-                }
-
-                // Se forem iguais, compara os tamanhos dos nomes.
-                res = (res != 0) ? res : outro.nome.length() - nome.length();
+            for (int i = 0; i < tam; ++i) {
+                res = outro.nome.charAt(i) - nome.charAt(i);
+                if (res != 0)
+                    i = tam;
             }
 
-            return res;
+            // Se forem iguais, compara os tamanhos dos nomes.
+            res = (res != 0) ? res : outro.nome.length() - nome.length();
         }
 
-        public String toString()
-        {
-            return "" + nome + " " + ouro + " " + prata + " " + bronze;
-        }
+        return res;
+    }
+
+    @Override public String toString()
+    {
+        return "" + nome + " " + ouro + " " + prata + " " + bronze;
     }
 }
