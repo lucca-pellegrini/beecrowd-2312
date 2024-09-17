@@ -1,3 +1,5 @@
+// Beecrowd 2312
+
 import java.util.Scanner;
 
 public class MedalTable
