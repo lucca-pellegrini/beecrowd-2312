@@ -23,7 +23,7 @@ public class MedalTable
         insertionSort(paises);
 
         for (Pais p : paises)
-            System.out.println(p.toString());
+            System.out.println(p);
     }
 
     public static <T extends Comparable<T> > void insertionSort(T[] vec)
