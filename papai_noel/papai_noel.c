@@ -55,21 +55,10 @@ void insertion_sort(char **vec, int n)
 
 int strcmp2(char *a, char *b)
 {
-	int resp = 0;
-	a--;
-	b--;
-
-	while (!resp && *++a && *++b) {
-		if (*a > *b)
-			resp = 1;
-		else if (*b > *a)
-			resp = -1;
+	while (*a && (*a == *b)) {
+		++a;
+		++b;
 	}
 
-	if (!resp && *a)
-		resp = 1;
-	else if (!resp && *b)
-		resp = -1;
-
-	return resp;
+	return *a - *b;
 }
